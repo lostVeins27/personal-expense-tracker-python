@@ -11,11 +11,15 @@ app.resizable(False,False)
 app.columnconfigure((0, 1, 2), weight=1)
 
 def balance_dialog():
-    dialog = ctk.CTkInputDialog(text="Input your balance", title="Balance")
+    dialog = ctk.CTkInputDialog(text="Input your current balance", title="Balance")
     balance = dialog.get_input()
+
+    if balance == None:
+        return
+
     balance_label.configure(text= f"BALANCE: {balance}")
 
-balance_label = ctk.CTkLabel(app, text="BALANCE:", font=("Arial", 24))
+balance_label = ctk.CTkLabel(app, text="BALANCE: 0", font=("Arial", 24))
 balance_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = (20, 20), sticky = "w")
 
 add_expense_button = ctk.CTkButton(app, text="Add Expense")
