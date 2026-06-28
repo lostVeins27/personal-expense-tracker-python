@@ -22,12 +22,12 @@ def balance_dialog():
 
 def expense_window():
     window = ctk.CTkToplevel(app)
-    window.geometry("400x350")
+    window.geometry("400x370")
     window.title("Expense")
     window.resizable(False,False)
 
     window.columnconfigure((1), weight= 1)
-    window.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight= 1)
+    window.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight= 1)
 
     account_options = (
         "Cash Wallet",
@@ -80,6 +80,16 @@ def expense_window():
     ctk.CTkLabel(window, text="Reciept:").grid(row = 6, column = 0, padx = 10, pady = (0, 10))
     reciept_image = ctk.CTkButton(window, text="Attach Image")
     reciept_image.grid(row = 6, column = 1, padx = 10, pady = (0, 10), sticky = "ew")
+
+    button_frame = ctk.CTkFrame(window, fg_color="transparent")
+    button_frame.grid(row =  7, column = 0, columnspan = 2, padx = 10, pady = (0, 10), sticky = "ew")
+    button_frame.columnconfigure((0, 1), weight= 1)
+
+    save_button = ctk.CTkButton(button_frame, text = "Save")
+    save_button.grid(row = 0, column = 0, padx = (0, 5), sticky = "ew")
+
+    cancel_button = ctk.CTkButton(button_frame, text = "Cancel", command= window.destroy)
+    cancel_button.grid(row = 0, column = 1, sticky = "ew")
 
 
 balance_label = ctk.CTkLabel(app, text="BALANCE: 0", font=("Arial", 24))
