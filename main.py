@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from tkcalendar import Calendar
+from datetime import date
 
 app = ctk.CTk()
 
@@ -21,6 +23,7 @@ def balance_dialog():
     balance_label.configure(text= f"BALANCE: {balance}")
 
 def expense_window():
+
     window = ctk.CTkToplevel(app)
     window.geometry("400x370")
     window.title("Expense")
@@ -53,30 +56,54 @@ def expense_window():
         "Others"
     )
 
+    selected_date = ctk.StringVar()
+
+    def open_calendar():
+        calendar_window = ctk.CTkToplevel(window)
+        calendar_window.geometry("300x300")
+        calendar_window.resizable(False,False)
+
+        cal = Calendar(calendar_window, selectmode = "day", date_pattern="yyyy-mm-dd")
+        cal.pack(pady = 20)
+
+    def date_option(choice):
+        if choice == "Today":
+            print(date.today().strftime("%Y-%m-%d"))
+        
+        elif choice == "Pick Date":
+            open_calendar()
+    
+    # Amount
     ctk.CTkLabel(window, text="Amount:").grid(row = 0, column = 0, padx = 10, pady = (10, 5))
     amount_entry = ctk.CTkEntry(window)
     amount_entry.grid(row = 0, column = 1, padx = 10, pady = (10, 5), sticky = "ew")
 
+    # Category
     ctk.CTkLabel(window, text="Category:").grid(row = 1, column = 0, padx = 10, pady = (0, 5))
     category_cb = ctk.CTkComboBox(window, values = category_options, state="readonly")
     category_cb.grid(row = 1, column = 1, padx = 10, pady = (0,5), sticky = "ew")
 
+    # Account
     ctk.CTkLabel(window, text="Account:").grid(row = 2, column = 0, padx = 10, pady = (0, 5))
     account_cb = ctk.CTkComboBox(window, values=account_options, state="readonly")
     account_cb.grid(row = 2, column = 1, padx = 10, pady = (0,5), sticky = "ew")
 
+    # Date
     ctk.CTkLabel(window, text="Date:").grid(row = 3, column = 0, padx = 10, pady= (0,5))
-    date = ctk.CTkComboBox(window)
-    date.grid(row = 3, column = 1, padx = 10, pady = (0,5), sticky = "ew")
+    date_cb = ctk.CTkComboBox(window, values = ["Today", "Pick Date"], state="readonly", command = date_option)
+    date_cb.grid(row = 3, column = 1, padx = 10, pady = (0,5), sticky = "ew")
 
+    # Merchant
     ctk.CTkLabel(window, text="Merchant:").grid(row = 4, column = 0, padx = 10, pady = (0,5))
     merchant_entry = ctk.CTkEntry(window)
     merchant_entry.grid(row = 4, column = 1, padx = 10, pady = (0,5), sticky = "ew")
 
+    # Notes
     ctk.CTkLabel(window, text="Notes:").grid(row = 5, column = 0, padx = 10, pady = (0,5))
     notes_tb = ctk.CTkTextbox(window, width= 100, height = 100 )
     notes_tb.grid(row = 5, column = 1, padx = 10, pady = (0,5), sticky = "ew")
 
+    # Reciept
     ctk.CTkLabel(window, text="Reciept:").grid(row = 6, column = 0, padx = 10, pady = (0, 10))
     reciept_image = ctk.CTkButton(window, text="Attach Image")
     reciept_image.grid(row = 6, column = 1, padx = 10, pady = (0, 10), sticky = "ew")
