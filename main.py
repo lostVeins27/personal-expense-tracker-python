@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkcalendar import Calendar
 from datetime import date
 from tkinter import filedialog
+from PIL import Image
 
 app = ctk.CTk()
 
@@ -90,13 +91,22 @@ def expense_window():
     def attach_file():
         file_path = filedialog.askopenfilename(title= "import reciept image", filetypes= [ ("Images", "*.png *.jpg *.jpeg"), ("All files", "*.*") ])
 
-        if file_path is None or file_path == "":
+        if not file_path:
             print("no attachment")
             return
         
-        view_image_button = ctk.CTkButton(window, text="View Image")
-        view_image_button.grid(row = 6 , column = 1, padx = (10, 0), pady = (0, 10), sticky = "ew")
-        reciept_image.grid(row = 6, column = 2, padx = (0, 10), pady = (0, 10), sticky = "ew")
+        def open_image():
+            image_window = ctk.CTkToplevel(window)
+            image_window.geometry("300x300")
+            image_window.resizable(False, False)
+
+            img = ctk.CTkImage(Image.open(file_path), size = (200, 200))
+            label = ctk.CTkLabel(image_window, text="", image= img)
+            label.pack(expand = True)
+
+        view_image_button = ctk.CTkButton(window, text="View Image", command = open_image)
+        view_image_button.grid(row = 6 , column = 1, padx = (10, 3), pady = (0, 10), sticky = "ew")
+        reciept_image.grid(row = 6, column = 2, padx = (3, 10), pady = (0, 10), sticky = "ew")
 
     window.columnconfigure((1, 2), weight= 1)
     window.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight= 1)
