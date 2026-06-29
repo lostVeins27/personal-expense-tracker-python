@@ -56,19 +56,27 @@ def expense_window():
         "Others"
     )
 
-    selected_date = ctk.StringVar()
-
     def open_calendar():
         calendar_window = ctk.CTkToplevel(window)
         calendar_window.geometry("300x300")
         calendar_window.resizable(False,False)
 
+        calendar_window.columnconfigure((0, 1), weight = 1)
+        calendar_window.rowconfigure((0, 1), weight = 1)
+
         cal = Calendar(calendar_window, selectmode = "day", date_pattern="yyyy-mm-dd")
-        cal.pack(pady = 20)
+        cal.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = (15, 10), sticky = "nsew")
+
+        def select_date():
+            date_cb.set(cal.get_date())
+            calendar_window.destroy()
+
+        ctk.CTkButton(calendar_window, text="Select", command= select_date).grid(row = 1, column = 0, padx = (10, 0), pady= (0, 10), sticky = "nsew")
+        ctk.CTkButton(calendar_window, text="Cancel", command= calendar_window.destroy).grid(row = 1, column = 1, padx = (5, 10), pady = (0, 10), sticky = "nsew")
 
     def date_option(choice):
         if choice == "Today":
-            print(date.today().strftime("%Y-%m-%d"))
+            date_cb.set(date.today().strftime("%Y-%m-%d"))
         
         elif choice == "Pick Date":
             open_calendar()
