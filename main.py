@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkcalendar import Calendar
 from datetime import date
+from tkinter import filedialog
 
 app = ctk.CTk()
 
@@ -14,6 +15,8 @@ app.rowconfigure(2, weight= 1)
 
 def balance_dialog():
 
+    """Balance dialog to input current balance"""
+
     dialog = ctk.CTkInputDialog(text="Input your current balance", title="Balance")
     balance = dialog.get_input()
 
@@ -24,10 +27,16 @@ def balance_dialog():
 
 def expense_window():
 
+    """Expense window after add expense window is pressed"""
+
     window = ctk.CTkToplevel(app)
     window.geometry("400x370")
     window.title("Expense")
     window.resizable(False,False)
+
+    window.transient(app)
+    window.lift()
+    window.focus_force()
 
     window.columnconfigure((1), weight= 1)
     window.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight= 1)
@@ -80,6 +89,9 @@ def expense_window():
         
         elif choice == "Pick Date":
             open_calendar()
+
+    def attach_file():
+        file_path = filedialog.askopenfilename(title= "import reciept image", filetypes= [ ("Images", "*.png *.jpg *.jpeg"), ("All files", "*.*") ])
     
     # Amount
     ctk.CTkLabel(window, text="Amount:").grid(row = 0, column = 0, padx = 10, pady = (10, 5))
@@ -113,7 +125,7 @@ def expense_window():
 
     # Reciept
     ctk.CTkLabel(window, text="Reciept:").grid(row = 6, column = 0, padx = 10, pady = (0, 10))
-    reciept_image = ctk.CTkButton(window, text="Attach Image")
+    reciept_image = ctk.CTkButton(window, text="Attach Image", command= attach_file)
     reciept_image.grid(row = 6, column = 1, padx = 10, pady = (0, 10), sticky = "ew")
 
     button_frame = ctk.CTkFrame(window, fg_color="transparent")
